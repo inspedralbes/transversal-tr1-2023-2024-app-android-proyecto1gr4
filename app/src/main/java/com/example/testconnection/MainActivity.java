@@ -3,6 +3,7 @@ package com.example.testconnection;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
                            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                             startActivity(intent);
                             Toast.makeText(MainActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
+                            User user = new User(username, password);
+
+                        // Almacena el objeto User en SharedPreferences
+                            SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username", user.getUsername());
+                            editor.putString("password", user.getPassword());
+                            editor.apply();
 
                         } else {
                             Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();

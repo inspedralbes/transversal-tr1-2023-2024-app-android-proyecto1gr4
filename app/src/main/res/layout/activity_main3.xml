@@ -33,6 +33,19 @@
                 android:contentDescription="Selección de opciones" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <!-- Vista para mostrar la contraseña -->
+    <TextView
+        android:id="@+id/passwordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameTextView"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
