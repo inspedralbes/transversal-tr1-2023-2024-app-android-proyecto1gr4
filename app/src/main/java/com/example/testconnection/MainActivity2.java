@@ -2,75 +2,89 @@ package com.example.testconnection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity2 extends AppCompatActivity {
+
+    private static final String BASE_URL = "http://10.0.2.2:3001/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getString(R.string.Comanda));
         setContentView(R.layout.activity_main2);
 
-        // Obtén una referencia al Spinner desde el diseño
-        Spinner spinner = findViewById(R.id.spinner);
+        // Realiza una solicitud para obtener la información completa del usuario
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        // Obtén las opciones desde strings.xml
-        String[] opciones = getResources().getStringArray(R.array.opciones_spinner);
+        // Aquí obtienes el usuario autenticado (pasado como Serializable en el Intent)
+        User user = (User) getIntent().getSerializableExtra("user");
 
-        // Configura un ArrayAdapter con las opciones y establece el adaptador en el Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opciones);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        if (user != null) {
+            UserInfoService userInfoService = retrofit.create(UserInfoService.class);
+            Call<List<User>> call = userInfoService.getUserInfo(user.getUsername());
 
-        // Agrega un listener para manejar la selección del usuario
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Evitar que se realicen acciones si la opción seleccionada es "Seleccione una opción"
-                if (position == 0) {
-                    return;
+            Log.d("MainActivity2", "User info received: " + user.getUsername());
+            call.enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    if (response.isSuccessful()) {
+                        List<User> userList = response.body();
+
+                        if (!userList.isEmpty()) {
+                            // Supongamos que deseas mostrar el primer usuario de la lista en tu interfaz
+                            User fullUserInfo = userList.get(0);
+
+                            Log.d("MainActivity2", "User info retrieved successfully");
+
+                            // Actualiza la interfaz de usuario con la información completa del usuario
+                            TextView usernameTextView = findViewById(R.id.nombreTextView);
+                            TextView cognomsTextView = findViewById(R.id.apellidosTextView);
+                            TextView contrasenyaTextView = findViewById(R.id.contrasenyaTextView);
+                            TextView emailTextView = findViewById(R.id.correoTextView);
+                            TextView numero_targetaTextView = findViewById(R.id.tarjetaTextView);
+                            TextView data_caducitatTextView = findViewById(R.id.caducidadTextView);
+                            TextView cvvTextView = findViewById(R.id.cvvTextView);
+
+                            usernameTextView.setText("Nombre: " + fullUserInfo.getUsername());
+                            cognomsTextView.setText("Apellidos: " + fullUserInfo.getCognoms());
+                            contrasenyaTextView.setText("Contrasenya: " + fullUserInfo.getPassword());
+                            emailTextView.setText("Correo Electrónico: " + fullUserInfo.getCorreuElectronic());
+                            numero_targetaTextView.setText("Tarjeta: " + fullUserInfo.getNumeroTargeta());
+                            data_caducitatTextView.setText("Data caducitat: " + fullUserInfo.getDataCaducitat());
+                            cvvTextView.setText("CVV: " + fullUserInfo.getCvv());
+                        } else {
+                            Log.e("MainActivity2", "La lista de usuarios está vacía");
+                        }
+                    } else {
+                        int statusCode = response.code(); // Obtiene el código de estado HTTP
+                        String errorMessage = "Error al obtener la información del usuario. Código de estado: " + statusCode;
+                        Log.e("MainActivity2", errorMessage);
+                        Toast.makeText(MainActivity2.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                String opcionSeleccionada = opciones[position];
-
-                // Realiza acciones basadas en la opción seleccionada
-                if (opcionSeleccionada.equals("Perfil usuari")) {
-                    // Iniciar MainActivity3
-                    Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
-                    startActivity(intent);
-                } else if (opcionSeleccionada.equals("Tancar sessió")) {
-                    // Iniciar Activity1
-                    Intent intent = new Intent(MainActivity2.this, MainActivity.class);
-                    startActivity(intent);
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+                    Log.e("MainActivity2", "Error de red", t);
+                    Toast.makeText(MainActivity2.this, "Error de red", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                Toast.makeText(MainActivity2.this, "No se ha seleccionado ninguna opción", Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        } else {
+            Log.e("MainActivity2", "User info is null");
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

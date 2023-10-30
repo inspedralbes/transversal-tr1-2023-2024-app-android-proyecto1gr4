@@ -12,8 +12,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
 
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -36,4 +34,68 @@
                 android:contentDescription="Selección de opciones" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/nombreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre:"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/apellidosTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apellidos:"
+        android:layout_below="@id/nombreTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+    <TextView
+        android:id="@+id/contrasenyaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contrasenya:"
+        android:layout_below="@id/apellidosTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/correoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correo Electrónico:"
+        android:layout_below="@id/contrasenyaTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tarjetaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Número de Tarjeta:"
+        android:layout_below="@id/correoTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/caducidadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de Caducidad:"
+        android:layout_below="@id/tarjetaTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/cvvTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CVV:"
+        android:layout_below="@id/caducidadTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+
 </RelativeLayout>

@@ -66,18 +66,6 @@ public class MainActivity3 extends AppCompatActivity {
 
 
     });
-        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
-        String password = sharedPreferences.getString("password", "");
 
-        // Crea un objeto User con los datos recuperados
-        User user = new User(username, password);
-
-        // Ahora puedes acceder a las propiedades del usuario y mostrarlos en tus vistas.
-        TextView usernameTextView = findViewById(R.id.usernameTextView);
-        TextView passwordTextView = findViewById(R.id.passwordTextView);
-
-        usernameTextView.setText("Usuario: " + user.getUsername());
-        passwordTextView.setText("Contraseña: " + user.getPassword());
     }
 }
