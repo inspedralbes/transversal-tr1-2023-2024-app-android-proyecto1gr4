@@ -5,18 +5,19 @@ import java.io.Serializable;
 
 
 public class User implements Serializable {
-    private String username;
-    private String cognoms;
-    private String password;
+    private String nom_usuari;
+    private String cognoms_usuari;
+
+    private String contrasenya;
     private String correu_electronic;
     private String numero_targeta;
     private String data_caducitat;
     private String cvv;
 
-    public User(String username, String cognoms, String password, String correu_electronic, String numero_targeta, String data_caducitat, String cvv) {
-        this.username = username;
-        this.cognoms = cognoms;
-        this.password = password;
+    public User(String username, String cognoms_usuari, String contrasenya, String correu_electronic, String numero_targeta, String data_caducitat, String cvv) {
+        this.nom_usuari = username;
+        this.cognoms_usuari = cognoms_usuari;
+        this.contrasenya = contrasenya;
         this.correu_electronic = correu_electronic;
         this.numero_targeta = numero_targeta;
         this.data_caducitat = data_caducitat;
@@ -25,28 +26,28 @@ public class User implements Serializable {
 
     // Getters y setters (opcional, puedes mantenerlos si son necesarios)
 
-    public String getUsername() {
-        return username;
+    public String getNom_usuari() {
+        return nom_usuari;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNom_usuari(String nom_usuari) {
+        this.nom_usuari = nom_usuari;
     }
 
-    public String getCognoms() {
-        return cognoms;
+    public String getCognoms_usuari() {
+        return cognoms_usuari;
     }
 
-    public void setCognoms(String cognoms) {
-        this.cognoms = cognoms;
+    public void setCognoms_usuari(String cognoms_usuari) {
+        this.cognoms_usuari = cognoms_usuari;
     }
 
-    public String getPassword() {
-        return password;
+    public String getContrasenya() {
+        return contrasenya;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setContrasenya(String contrasenya) {
+        this.contrasenya = contrasenya;
     }
 
     public String getCorreuElectronic() {

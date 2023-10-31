@@ -35,9 +35,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         if (user != null) {
             UserInfoService userInfoService = retrofit.create(UserInfoService.class);
-            Call<List<User>> call = userInfoService.getUserInfo(user.getUsername());
+            Call<List<User>> call = userInfoService.getUserInfo(user.getNom_usuari());
 
-            Log.d("MainActivity2", "User info received: " + user.getUsername());
+            Log.d("MainActivity2", "User info received: " + user.getNom_usuari());
             call.enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -53,15 +53,13 @@ public class MainActivity2 extends AppCompatActivity {
                             // Actualiza la interfaz de usuario con la información completa del usuario
                             TextView usernameTextView = findViewById(R.id.nombreTextView);
                             TextView cognomsTextView = findViewById(R.id.apellidosTextView);
-                            TextView contrasenyaTextView = findViewById(R.id.contrasenyaTextView);
                             TextView emailTextView = findViewById(R.id.correoTextView);
                             TextView numero_targetaTextView = findViewById(R.id.tarjetaTextView);
                             TextView data_caducitatTextView = findViewById(R.id.caducidadTextView);
                             TextView cvvTextView = findViewById(R.id.cvvTextView);
 
-                            usernameTextView.setText("Nombre: " + fullUserInfo.getUsername());
-                            cognomsTextView.setText("Apellidos: " + fullUserInfo.getCognoms());
-                            contrasenyaTextView.setText("Contrasenya: " + fullUserInfo.getPassword());
+                            usernameTextView.setText("Nombre: " + fullUserInfo.getNom_usuari());
+                            cognomsTextView.setText("Apellidos: " + fullUserInfo.getCognoms_usuari());
                             emailTextView.setText("Correo Electrónico: " + fullUserInfo.getCorreuElectronic());
                             numero_targetaTextView.setText("Tarjeta: " + fullUserInfo.getNumeroTargeta());
                             data_caducitatTextView.setText("Data caducitat: " + fullUserInfo.getDataCaducitat());
