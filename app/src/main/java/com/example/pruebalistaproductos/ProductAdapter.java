@@ -10,13 +10,38 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
-    private List<Producto> productos;
 
-    public ProductAdapter(List<Producto> productos) {
+    public interface OnProductAddedListener {
+        void onProductAdded(List<Producto> addedProducts);
+    }
+
+    private OnProductAddedListener listener;
+    private List<Producto> productos;
+    private List<Producto> addedProducts;
+
+    private int numFragment;
+
+    public ProductAdapter(List<Producto> productos, int numFragment) {
         this.productos = productos;
+        this.addedProducts = new ArrayList<>();
+        this.numFragment = numFragment;
+    }
+
+    public ProductAdapter(List<Producto> productos, OnProductAddedListener listener) {
+        this.productos = productos;
+        this.listener = listener;
+        this.addedProducts = new ArrayList<>();
+    }
+
+    public ProductAdapter(List<Producto> productos, int numFragment, OnProductAddedListener listener) {
+        this.productos = productos;
+        this.listener = listener;
+        this.addedProducts = new ArrayList<>();
+        this.numFragment = numFragment;
     }
 
     @NonNull
@@ -24,7 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.product_item, parent, false);
-        return new ProductViewHolder(v);
+        return new ProductViewHolder(v, this);
     }
 
     @Override
@@ -34,6 +59,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.priceTextView.setText(String.valueOf(product.getPrecio()));
         holder.descriptionTextView.setText(product.getDescripcion());
 
+        if(numFragment == 1){
+            holder.botoAfegir.setText("Comprar");
+            holder.botoAfegir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Producto productToAdd = productos.get(position);
+                        addedProducts.add(productToAdd);
+                        listener.onProductAdded(addedProducts);
+                    }
+                }
+            });
+        } else if(numFragment == 2){
+            holder.botoAfegir.setText("Eliminar");
+            holder.botoAfegir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    productos.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, productos.size());
+                }
+            });
+        }
     }
 
     @Override
@@ -45,16 +94,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView nameTextView;
         TextView priceTextView;
         TextView descriptionTextView;
-        ImageView imageView;
 
         Button botoAfegir;
 
-        public ProductViewHolder(@NonNull View itemView) {
+        public ProductViewHolder(@NonNull View itemView, final ProductAdapter adapter) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.textNombre);
             priceTextView = itemView.findViewById(R.id.textPrecio);
             descriptionTextView = itemView.findViewById(R.id.textDescripcion);
             botoAfegir = itemView.findViewById(R.id.botoAfegir);
+
         }
     }
 }
