@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testconnection.databinding.FragmentFirstBinding;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +48,31 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        List<Producto> addedProducts;
+
+        if(getArguments() == null) {
+            addedProducts = new ArrayList<>();
+        } else {
+            addedProducts = (List<Producto>) getArguments().getSerializable("addedProducts");
+        }
+
+
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                // Check if there are any added products
+                if (!addedProducts.isEmpty()) {
+                    // pass the addedProducts list
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("addedProducts", (Serializable) addedProducts);
+
+                    NavHostFragment.findNavController(FirstFragment.this)
+                            .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+
+                } else {
+                    NavHostFragment.findNavController(FirstFragment.this)
+                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                }
             }
         });
 
@@ -65,12 +86,6 @@ public class FirstFragment extends Fragment {
         api.getProductes().enqueue(new Callback<List<Producto>>() {
             @Override
             public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getActivity(), "Succesful", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                }
-
                 List<Producto> productes = response.body();
 
                 List<Producto> prod_disponibles = new ArrayList<>();
@@ -82,7 +97,17 @@ public class FirstFragment extends Fragment {
 
                 RecyclerView recyclerView = view.findViewById(R.id.my_recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setAdapter(new ProductAdapter(prod_disponibles));
+
+                ProductAdapter productAdapter = new ProductAdapter(prod_disponibles, 1, new ProductAdapter.OnProductAddedListener() {
+                    @Override
+                    public void onProductAdded(List<Producto> addedProductsFromAdapter) {
+                        // Update addedProducts in FirstFragment with addedProducts from ProductAdapter
+                        addedProducts.clear();
+                        addedProducts.addAll(addedProductsFromAdapter);
+                    }
+                });
+
+                recyclerView.setAdapter(productAdapter);
             }
 
             @Override
@@ -91,6 +116,7 @@ public class FirstFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onDestroyView() {

@@ -1,6 +1,8 @@
 package com.example.testconnection;
 
-public class Producto {
+import java.io.Serializable;
+
+public class Producto implements Serializable {
     int id;
     String nombre;
     float precio;
@@ -12,7 +14,7 @@ public class Producto {
     int disponibilidad;
     int isActive;
 
-public Producto(int id, String nombre, float precio, String descripcion, String fotos, int tipo_id, int tienda_id, int stock, int disponibilidad, int isActive) {
+    public Producto(int id, String nombre, float precio, String descripcion, String fotos, int tipo_id, int tienda_id, int stock, int disponibilidad, int isActive) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
