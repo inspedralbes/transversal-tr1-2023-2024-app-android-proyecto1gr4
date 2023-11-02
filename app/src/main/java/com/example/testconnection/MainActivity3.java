@@ -73,6 +73,12 @@ public class MainActivity3 extends AppCompatActivity {
             }
             return true;
         }
+        if (id == R.id.cerrarSesion) {
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
