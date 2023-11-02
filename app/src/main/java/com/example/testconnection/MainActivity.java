@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                             // Login exitoso
                             // Aquí puedes realizar acciones adicionales si es necesario
                             // Luego, inicia MainActivity2 y pasa el nombre de usuario
-                            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                            Intent intent = new Intent(MainActivity.this, MainActivity3.class);
                             intent.putExtra("user", user); // Aquí pasamos el objeto User serializado
                             Log.d("MainActivity", "Información de usuario que se pasa a Activity2: " + username);
 
