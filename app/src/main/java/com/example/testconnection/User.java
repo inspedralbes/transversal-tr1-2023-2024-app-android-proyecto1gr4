@@ -14,8 +14,8 @@ public class User implements Serializable {
     private String data_caducitat;
     private String cvv;
 
-    public User(String username, String cognoms_usuari, String contrasenya, String correu_electronic, String numero_targeta, String data_caducitat, String cvv) {
-        this.nom_usuari = username;
+    public User(String nom_usuari, String cognoms_usuari, String contrasenya, String correu_electronic, String numero_targeta, String data_caducitat, String cvv) {
+        this.nom_usuari = nom_usuari;
         this.cognoms_usuari = cognoms_usuari;
         this.contrasenya = contrasenya;
         this.correu_electronic = correu_electronic;
@@ -24,7 +24,7 @@ public class User implements Serializable {
         this.cvv = cvv;
     }
 
-    // Getters y setters (opcional, puedes mantenerlos si son necesarios)
+
 
     public String getNom_usuari() {
         return nom_usuari;

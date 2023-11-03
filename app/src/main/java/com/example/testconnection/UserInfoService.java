@@ -10,5 +10,5 @@ import retrofit2.http.Query;
 
 public interface UserInfoService {
     @GET("getUsuarios")
-    Call<List<User>> getUserInfo(@Query("user") String username);
+    Call<List<User>> getUserInfo(@Query("user") String nom_usuari);
 }

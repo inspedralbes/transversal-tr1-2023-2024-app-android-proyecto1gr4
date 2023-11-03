@@ -2,8 +2,11 @@ package com.example.testconnection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,9 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        // Inflar el menú
+
 
         // Realiza una solicitud para obtener la información completa del usuario
         Retrofit retrofit = new Retrofit.Builder()
@@ -84,5 +90,43 @@ public class MainActivity2 extends AppCompatActivity {
         } else {
             Log.e("MainActivity2", "User info is null");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflar el menú desde el archivo menu.xml
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            // Crea un Intent para abrir MainActivity2
+            Intent intent = new Intent(this, MainActivity2.class);
+
+            // Aquí puedes obtener el objeto User que desees pasar a MainActivity2
+            User user = (User) getIntent().getSerializableExtra("user");
+
+            if (user != null) {
+                // Pasa el objeto User serializado a MainActivity2
+                intent.putExtra("user", user);
+
+                // Inicia MainActivity2
+                startActivity(intent);
+            } else {
+                Log.e("MainActivity3", "El objeto User es nulo");
+            }
+            return true;
+        }
+        if (id == R.id.cerrarSesion) {
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }
