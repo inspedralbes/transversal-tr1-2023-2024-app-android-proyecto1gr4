@@ -31,18 +31,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
+    private List<Producto> allProducts; // Lista de todos los productos sin filtrar
+    private List<Producto> filteredProducts; // Lista de productos filtrados
+    private ProductAdapter productAdapter;
 
     private String BASE_URL = "http://10.0.2.2:3001/";
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -56,7 +54,6 @@ public class FirstFragment extends Fragment {
             addedProducts = (List<Producto>) getArguments().getSerializable("addedProducts");
         }
 
-
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +65,6 @@ public class FirstFragment extends Fragment {
 
                     NavHostFragment.findNavController(FirstFragment.this)
                             .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
-
                 } else {
                     NavHostFragment.findNavController(FirstFragment.this)
                             .navigate(R.id.action_FirstFragment_to_SecondFragment);
@@ -85,20 +81,22 @@ public class FirstFragment extends Fragment {
 
         api.getProductes().enqueue(new Callback<List<Producto>>() {
             @Override
-            public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
-                List<Producto> productes = response.body();
+            public void onResponse(Call<List<Producto>> call, Response<List<Producto>>response) {
+                allProducts = response.body();
 
-                List<Producto> prod_disponibles = new ArrayList<>();
-                for (Producto producto : productes) {
+                // Filter products with disponibilidad = 1
+                filteredProducts = new ArrayList<>();
+                for (Producto producto : allProducts) {
                     if (producto.getDisponibilidad() == 1) {
-                        prod_disponibles.add(producto);
+                        filteredProducts.add(producto);
                     }
                 }
 
+                // Initialize the ProductAdapter with filteredProducts
                 RecyclerView recyclerView = view.findViewById(R.id.my_recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                ProductAdapter productAdapter = new ProductAdapter(prod_disponibles, 1, new ProductAdapter.OnProductAddedListener() {
+                productAdapter = new ProductAdapter(filteredProducts, 1, new ProductAdapter.OnProductAddedListener() {
                     @Override
                     public void onProductAdded(List<Producto> addedProductsFromAdapter) {
                         // Update addedProducts in FirstFragment with addedProducts from ProductAdapter
@@ -115,13 +113,55 @@ public class FirstFragment extends Fragment {
                 Log.d("ErrorConnection", t.getMessage());
             }
         });
+
+        // Configure button1 for tipo_id 1 filter
+        binding.button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterProductsByTipoId(1);
+                productAdapter.notifyDataSetChanged(); // Notifica al adaptador sobre los cambios en los datos
+            }
+        });
+
+        // Configure button2 for tipo_id 2 filter
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterProductsByTipoId(2);
+                productAdapter.notifyDataSetChanged(); // Notifica al adaptador sobre los cambios en los datos
+            }
+        });
+
+        // Configure button3 for tipo_id 3 filter
+        binding.button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterProductsByTipoId(3);
+                productAdapter.notifyDataSetChanged(); // Notifica al adaptador sobre los cambios en los datos
+            }
+        });
     }
 
+    // Método para filtrar productos por tipo_id
+    private void filterProductsByTipoId(int tipoId) {
+        filteredProducts.clear();
+        for (Producto producto : allProducts) {
+            if (producto.getTipo_id() == tipoId) {
+                filteredProducts.add(producto);
+            }
+        }
 
+        // Agrega esta declaración Log.d para imprimir los productos filtrados
+        for (Producto producto : filteredProducts) {
+            Log.d("ProductoFiltrado", "Nombre: " + producto.getNombre() + ", Precio: " + producto.getPrecio());
+        }
+
+        // Actualiza el adaptador con los productos filtrados
+        productAdapter.updateProductList(filteredProducts);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
 }

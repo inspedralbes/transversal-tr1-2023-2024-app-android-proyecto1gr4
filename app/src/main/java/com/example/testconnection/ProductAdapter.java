@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     public interface OnProductAddedListener {
         void onProductAdded(List<Producto> addedProducts);
@@ -22,7 +22,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private OnProductAddedListener listener;
     private List<Producto> productos;
     private List<Producto> addedProducts;
-
     private int numFragment;
 
     public ProductAdapter(List<Producto> productos, int numFragment) {
@@ -59,7 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.priceTextView.setText(String.valueOf(product.getPrecio()));
         holder.descriptionTextView.setText(product.getDescripcion());
 
-        if(numFragment == 1){
+        if (numFragment == 1) {
             holder.botoAfegir.setText("Comprar");
             holder.botoAfegir.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,7 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }
                 }
             });
-        } else if(numFragment == 2){
+        } else if (numFragment == 2) {
             holder.botoAfegir.setText("Eliminar");
             holder.botoAfegir.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,11 +89,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productos.size();
     }
 
+    public void updateProductList(List<Producto> updatedProducts) {
+        productos.clear();
+        productos.addAll(updatedProducts);
+        notifyDataSetChanged();
+    }
+
+
+
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
         TextView priceTextView;
         TextView descriptionTextView;
-
         Button botoAfegir;
 
         public ProductViewHolder(@NonNull View itemView, final ProductAdapter adapter) {
@@ -103,7 +109,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             priceTextView = itemView.findViewById(R.id.textPrecio);
             descriptionTextView = itemView.findViewById(R.id.textDescripcion);
             botoAfegir = itemView.findViewById(R.id.botoAfegir);
-
         }
     }
 }
