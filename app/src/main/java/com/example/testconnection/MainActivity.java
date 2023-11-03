@@ -54,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
                     UserService userService = retrofit.create(UserService.class);
 
-                    Call<ResponseBody> call = userService.login(nom_usuari, contrasenya);
+
+
                     User user = new User(nom_usuari, null, contrasenya, null, null, null, null);
+                    Call<ResponseBody> call = userService.login(user);
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
