@@ -34,37 +34,34 @@ public class FirstFragment extends Fragment {
     private List<Producto> filteredProducts;
     private ProductAdapter productAdapter;
     private String BASE_URL = "http://10.0.2.2:3001/";
+    private List<Producto> addedProducts = new ArrayList<>();  // Variable para mantener la lista de productos agregados
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Producto> addedProducts;
-
-        if(getArguments() == null) {
-            addedProducts = new ArrayList<>();
-        } else {
+        // Si se ha pasado la lista de productos agregados desde el SecondFragment, úsala
+        if (getArguments() != null) {
             addedProducts = (List<Producto>) getArguments().getSerializable("addedProducts");
         }
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!addedProducts.isEmpty()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("addedProducts", (Serializable) addedProducts);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("addedProducts", (Serializable) addedProducts);
 
-                    NavHostFragment.findNavController(FirstFragment.this)
-                            .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
-                } else {
-                    NavHostFragment.findNavController(FirstFragment.this)
-                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
-                }
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
             }
         });
+
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -85,7 +82,7 @@ public class FirstFragment extends Fragment {
                 productAdapter = new ProductAdapter(filteredProducts, 1, new ProductAdapter.OnProductAddedListener() {
                     @Override
                     public void onProductAdded(List<Producto> addedProductsFromAdapter) {
-                        addedProducts.clear();
+                        // No borres la lista, agrega los nuevos productos
                         addedProducts.addAll(addedProductsFromAdapter);
                     }
                 });
