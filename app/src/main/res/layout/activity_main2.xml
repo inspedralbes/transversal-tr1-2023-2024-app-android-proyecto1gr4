@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AF7AC5"
+    android:padding="16dp">
+
+    <!-- TextViews con etiquetas -->
+    <TextView
+        android:id="@+id/nombreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/apellidosTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apellidos:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/nombreTextView"
+        android:layout_marginTop="16dp"
+        android:layout_alignStart="@id/nombreTextView" />
+
+    <TextView
+        android:id="@+id/correoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correo Electrónico:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/apellidosTextView"
+        android:layout_marginTop="16dp"
+        android:layout_alignStart="@id/apellidosTextView" />
+
+    <TextView
+        android:id="@+id/tarjetaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Número de Tarjeta:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/correoTextView"
+        android:layout_marginTop="16dp"
+        android:layout_alignStart="@id/correoTextView" />
+
+    <TextView
+        android:id="@+id/caducidadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de Caducidad:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/tarjetaTextView"
+        android:layout_marginTop="16dp"
+        android:layout_alignStart="@id/tarjetaTextView" />
+
+    <TextView
+        android:id="@+id/cvvTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CVV:"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/caducidadTextView"
+        android:layout_marginTop="16dp"
+        android:layout_alignStart="@id/caducidadTextView" />
+
+</RelativeLayout>

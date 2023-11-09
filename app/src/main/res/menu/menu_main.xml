@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blau"
+    android:backgroundTint="@color/blau"
+    tools:context="com.example.testconnection.MainActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:backgroundTint="@color/verd"
+        android:background="@color/verd"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/cerrarSesion"
+        android:orderInCategory="100"
+        android:title="Cerrar sesion"
+        android:backgroundTint="@color/verd"
+        android:background="@color/verd"
+        app:showAsAction="never" />
+</menu>
